@@ -24,12 +24,18 @@ export const CartSlice = createSlice({
     },
 
     updateQuantity: (state, action) => {
-        const { productName, quantity } = action.payload;
-        const product = state.items.find(item => item.name === productName);
-        if (product) {
-          product.quantity = quantity;
+      const { name, quantity, operation } = action.payload;
+      const product = state.items.find(item => item.name === name);
+    
+      if (product) {
+        // Si la operación es 'increment', sumamos 1, si es 'decrement', restamos 1
+        if (operation === 'increment') {
+          product.quantity += 1;
+        } else if (operation === 'decrement' && product.quantity > 1) {
+          product.quantity -= 1;
         }
-      },
+      }
+    }
     },
 });
 

@@ -7,30 +7,32 @@ const CartItem = ({ onContinueShopping }) => {
   const cart = useSelector(state => state.cart.items);
   const dispatch = useDispatch();
 
-  // Calculate total amount for all products in the cart
-  const calculateTotalAmount = () => {
- 
-  };
+    const calculateTotalAmount = () => {
+      return cart
+        .reduce((total, item) => total + parseFloat(item.cost) * (item.quantity || 1), 0)
+        .toFixed(2); // Ensure the result is formatted to 2 decimal places
+    };
 
-  const handleContinueShopping = (e) => {
-   
-  };
+    const handleContinueShopping = (e) => {
+     
+    };
 
+    const handleIncrement = (item) => {
+      dispatch(updateQuantity({ name: item.name, quantity: item.quantity, operation: 'increment' }));
+    };
 
+    const handleDecrement = (item) => {
+      dispatch(updateQuantity({ name: item.name, quantity: item.quantity, operation: 'decrement' }));
+    };
 
-  const handleIncrement = (item) => {
-  };
-
-  const handleDecrement = (item) => {
-   
-  };
-
-  const handleRemove = (item) => {
-  };
+    const handleRemove = (item) => {
+      dispatch(removeItem(item.name));
+    };
 
   // Calculate total cost based on quantity for an item
-  const calculateTotalCost = (item) => {
-  };
+    const calculateTotalCost = (item) => {
+      return (item.cost * item.quantity).toFixed(2);
+    };
 
   return (
     <div className="cart-container">
@@ -45,7 +47,7 @@ const CartItem = ({ onContinueShopping }) => {
               <div className="cart-item-quantity">
                 <button className="cart-item-button cart-item-button-dec" onClick={() => handleDecrement(item)}>-</button>
                 <span className="cart-item-quantity-value">{item.quantity}</span>
-                <button className="cart-item-button cart-item-button-inc" onClick={() => handleIncrement(item)}>+</button>
+                <button className="cart-item-button cart-item-button-inc" onClick={() => handleIncrement(item)} >+</button>
               </div>
               <div className="cart-item-total">Total: ${calculateTotalCost(item)}</div>
               <button className="cart-item-delete" onClick={() => handleRemove(item)}>Delete</button>
