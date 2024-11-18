@@ -7,11 +7,12 @@ const CartItem = ({ onContinueShopping }) => {
   const cart = useSelector(state => state.cart.items);
   const dispatch = useDispatch();
 
-    const calculateTotalAmount = () => {
-      return cart
-        .reduce((total, item) => total + parseFloat(item.cost) * (item.quantity || 1), 0)
-        .toFixed(2); // Ensure the result is formatted to 2 decimal places
-    };
+  const calculateTotalAmount = () => {
+    return cart.reduce((total, item) => {
+        const numericCost = parseFloat(item.cost.replace('$', ''));
+        return total + numericCost * item.quantity;
+    }, 0).toFixed(2);
+};
 
     const handleContinueShopping = (e) => {
      
@@ -29,9 +30,9 @@ const CartItem = ({ onContinueShopping }) => {
       dispatch(removeItem(item.name));
     };
 
-  // Calculate total cost based on quantity for an item
     const calculateTotalCost = (item) => {
-      return (item.cost * item.quantity).toFixed(2);
+        const numericCost = parseFloat(item.cost.replace('$', ''));
+        return (numericCost * item.quantity).toFixed(2);
     };
 
   return (
