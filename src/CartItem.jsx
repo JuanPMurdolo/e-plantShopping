@@ -14,6 +14,12 @@ const CartItem = ({ onContinueShopping }) => {
     }, 0).toFixed(2);
 };
 
+const calculateTotalQuantity = () => {
+    return cart.reduce((total, item) => {
+        const quant = parseFloat(item.quantity);
+        return total + quant;
+    }, 0);
+};
     const handleContinueShopping = () => {
         onContinueShopping();
       };
@@ -35,9 +41,14 @@ const CartItem = ({ onContinueShopping }) => {
         return (numericCost * item.quantity).toFixed(2);
     };
 
+    const handleCheckoutShopping = () => {
+        alert('Functionality to be added for future reference');
+      };
+
   return (
     <div className="cart-container">
       <h2 style={{ color: 'black' }}>Total Cart Amount: ${calculateTotalAmount()}</h2>
+      <h2 style={{ color: 'black' }}>Total Cart Quantity: {calculateTotalQuantity()}</h2>
       <div>
         {cart.map(item => (
           <div className="cart-item" key={item.name}>
@@ -60,7 +71,7 @@ const CartItem = ({ onContinueShopping }) => {
       <div className="continue_shopping_btn">
         <button className="get-started-button" onClick={handleContinueShopping}>Continue Shopping</button>
         <br />
-        <button className="get-started-button1">Checkout</button>
+        <button className="get-started-button1" onClick={handleCheckoutShopping}>Checkout</button>
       </div>
     </div>
   );

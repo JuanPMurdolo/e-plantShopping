@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 function ProductList() {
     const [showCart, setShowCart] = useState(false); 
     const [addedToCart, setAddedToCart] = useState({});
-    const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
+    const [showPlants, setShowPlants] = useState(false);
+    const [disabledButtons, setDisabledButtons] = useState([]);
     const dispatch = useDispatch();
     const cartItems = useSelector(state => state.cart.items);
     const plantsArray = [
@@ -257,7 +258,12 @@ const handlePlantsClick = (e) => {
       ...prevState,
       [plant.name]: true,
     }));
+    setDisabledButtons(prevState => Array.isArray(prevState) 
+    ? [...prevState, plant.name] 
+    : [plant.name]); // Ensure it's always an array
+    
   };
+
 
     return (
         <div>
@@ -291,7 +297,7 @@ const handlePlantsClick = (e) => {
                             <div className="product-title">{plant.name}</div>
                             <div className="product-price">{plant.cost}</div>
                             <div>{plant.description}</div>
-                            <button className="product-button" onClick={() => handleAddToCart(plant)}>Add to Cart</button>
+                            <button onClick={() => handleAddToCart(plant)} className={`product-button ${addedToCart[plant.name] ? 'added-to-cart' : ''}`} disabled={disabledButtons.includes(plant.name)}> {addedToCart[plant.name] ? 'Added' : 'Add to Cart'} </button>
                         </div>
                         ))}
                     </div>
